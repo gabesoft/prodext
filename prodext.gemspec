@@ -4,27 +4,20 @@ require "prodext/version"
 
 Gem::Specification.new do |s|
   s.name          = "prodext"
-  s.version       = Prodext::VERSION
-  s.authors       = ["gabriel"]
-  s.email         = ["gabesoft@gmail.com"]
+  s.authors       = %w{gabriel}
+  s.email         = %w{gabesoft@gmail.com}
+
   s.platform      = Gem::Platform::RUBY
+  s.version       = Prodext::VERSION
+
   s.homepage      = "http://github.com/gabesoft/prodext"
   s.summary       = "Product extractor"
   s.description   = ""
-  s.require_path  = 'lib'
-  s.executables   = %w{prodext}
 
   s.rubyforge_project = "prodext"
 
-  s.files         = %w{
-    README
-    Rakefile
-  } + Dir['lib/**/*.rb']
-
+  s.require_paths = %w{lib}
+  s.executables   = %w{prodext}
+  s.files         = %w{README Rakefile} + Dir['lib/**/*.rb']
   s.test_files    = Dir['spec/*.rb']
-
-  #s.files         = `git ls-files`.split("\n")
-  #s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  #s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  #s.require_paths = ["lib"]
 end
