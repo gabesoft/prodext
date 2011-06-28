@@ -45,6 +45,7 @@ module Prodext
   class CookieStoreSerializer
 
     def self.file_save(file, cookies)
+      puts "saving file #{file}"
       if !!file
         File.open(file, 'w') do |stream| 
           save stream, cookies 
@@ -53,6 +54,7 @@ module Prodext
     end
 
     def self.file_load(file)
+      puts "loading file #{file}"
       if !!file && (File.exists? file)
         File.open(file, 'r') do |stream|
           load stream
