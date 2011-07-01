@@ -18,7 +18,4 @@ describe Prodext do
       html.should eq response
     end
   end
-
-  # TODO: get page
-  # TODO: post page
 end

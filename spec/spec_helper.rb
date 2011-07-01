@@ -1,4 +1,6 @@
 require 'rubygems'
+require File.dirname(__FILE__) + '/fakeweb_helper'
+
 require 'bundler/setup'
 require 'prodext'
 
