@@ -26,16 +26,16 @@ module Prodext
 
     def parse(html = nil, data = nil)
       if html.nil?
-        { :urls => [SpecWeb.get_url('a')], :step => [:s1], :results => [] }
+        { :urls => [to_url('a')], :step => [:s1], :results => [] }
       else
         step = data[:step][-1]
         case step
         when :s1
           data[:step] << :s2
-          data[:urls] = ['a1', 'a2'].map{|u| SpecWeb.get_url u}
+          data[:urls] = ['a1', 'a2'].map{|u| to_url u}
         when :s2
           data[:step] << :s3
-          data[:urls] = [SpecWeb.get_url('a11')]
+          data[:urls] = [to_url('a11')]
         when :s3
           data[:step] << :s4
           data[:urls] = []
@@ -46,6 +46,10 @@ module Prodext
     end
 
     private
+
+    def to_url relative_url
+      { :url => (SpecWeb.get_url relative_url), :method => :get, :options => {} }
+    end
 
     def register_url path
       SpecWeb.register_get path, path
