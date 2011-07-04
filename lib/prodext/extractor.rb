@@ -9,22 +9,16 @@ module Prodext
     end
 
     def extract parser
-      @urls = append_urls parser.parse
+      data = parser.parse
+      @urls.concat data[:urls]
       while @urls.length > 0 do
-        item = @urls.shift
-        url = item[:url]
-        data = item[:data]
-        html = make_request url
-        data = parser.parse html, data
-        append_urls data
+        url_data = @urls.shift
+        html = make_request url_data
+        data = parser.parse html, url_data[:state]
+        @urls.concat data[:urls]
         @results.concat data[:results]
       end
       @results
-    end
-
-    def append_urls data
-      urls = data[:urls]
-      @urls.concat urls.map{|u| {:url => u, :data => data}}
     end
 
     def make_request url_data

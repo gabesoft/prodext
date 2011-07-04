@@ -1,4 +1,4 @@
-$:.unshift(File.dirname(__FILE__))
+#$:.unshift(File.dirname(__FILE__))
 require 'spec_helper'
 
 module Prodext
@@ -12,7 +12,7 @@ module Prodext
       extractor = Extractor.new
       data = extractor.extract parser
       data.should be
-      data.should eq ['a', 'a1', 'a2', 'a11']
+      data.should eq [ 'a', 'a1', 'a2', 'a11', 'a21' ]
     end
   end
 
@@ -22,33 +22,31 @@ module Prodext
       register_url 'a1'
       register_url 'a2'
       register_url 'a11'
+      register_url 'a21'
     end
 
     def parse(html = nil, data = nil)
       if html.nil?
-        { :urls => [to_url('a')], :step => [:s1], :results => [] }
+        { :urls => [ to_url('a', { :step => :s1 }) ], :results => [] }
       else
-        step = data[:step][-1]
+        step = data[:step]
+        urls = []
+
         case step
         when :s1
-          data[:step] << :s2
-          data[:urls] = ['a1', 'a2'].map{|u| to_url u}
+          urls = [ 'a1', 'a2' ].map{|u| to_url(u, { :step => :s2 })}
         when :s2
-          data[:step] << :s3
-          data[:urls] = [to_url('a11')]
-        when :s3
-          data[:step] << :s4
-          data[:urls] = []
+          urls = [ to_url(html + '1', { :step => :s3 }) ]
         end
-        data[:results] = [html]
-        data
+
+        { :urls => urls, :results => [ html ] }
       end
     end
 
     private
 
-    def to_url relative_url
-      { :url => (SpecWeb.get_url relative_url), :method => :get, :options => {} }
+    def to_url(relative_url, state)
+      { :url => (SpecWeb.get_url relative_url), :method => :get, :state => state, :options => {} }
     end
 
     def register_url path

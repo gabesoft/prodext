@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><link rel="stylesheet" type="text/css" href="/superstore/p/cfh.css"/><title></title><meta name="keywords" content="grocery, shopping" /><meta name="Copyright" content="Copyright 2004 - Safeway.com - all rights reserved. Reproduction of this site in any form without prior written permission is forbidden." /><meta name="Description" content="" /><meta name="Robots" content="ALL" /><meta name="Author" content="Safeway.com" /><meta http-equiv="Content-Type" content="text/html charset=utf-8" /><script type="text/javascript" src="/gwinclude/js/tracking.js"></script></head><body><form name="frmPageForm" method="post" action="Shelves.aspx?ID=5_3" id="frmPageForm">
+      <input type="hidden" name="__EVENTTARGET" value="" />
+      <input type="hidden" name="__EVENTARGUMENT" value="" />
+      <input type="hidden" name="__VIEWSTATE" value="dDwtNzQ4ODEyNDIxOztsPEFycm93SW1hZ2U7Pj4=" />
+
+      <script language="javascript" type="text/javascript">
+        <!--
+        function __doPostBack(eventTarget, eventArgument) {
+          var theform;
+          if (window.navigator.appName.toLowerCase().indexOf("microsoft") > -1) {
+            theform = document.frmPageForm;
+          }
+          else {
+            theform = document.forms["frmPageForm"];
+          }
+          theform.__EVENTTARGET.value = eventTarget.split("$").join(":");
+          theform.__EVENTARGUMENT.value = eventArgument;
+          theform.submit();
+        }
+// -->
+</script>
+<div id="container"><div id="content">
+    <script language="javascript">
+      function UpdateFrames(Type,DID,AID,Shelfid,DeptName,AisleName,ShelfName)
+      {
+        if(Type=="SHOP")
+        {
+          top.main.location.href="IconDepartments.aspx";
+          location.href="Departments.aspx";
+          return false;
+        }
+        else
+        {
+          if(Type=="SHELF")
+          {
+            top.main.location.href="/superstore/shelf.asp?shelfId="+Shelfid+"&DeptName="+escape(DeptName)+"&AisleName="+escape(AisleName)+"&ShelfName="+escape(ShelfName);
+            return false;	
+          }
+          else
+          {
+            if(Type=="DEPARTMENT")
+            {
+              top.main.location.href="IconAisles.aspx?ID="+DID;
+              location.href="Aisles.aspx?ID="+DID;
+              return false;
+            }
+            else
+            {
+              if(Type=="AISLE")
+              {
+                top.main.location.href="IconShelves.aspx?ID="+AID;
+                return false;
+              }
+            }
+          }
+        }
+      }			
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="/superstore/css/leftbar.css"/>
+    <div class="shopByAisleContainer">
+      <table cellspacing="0" cellpadding="0" width="180" border="0">
+        <tr>
+          <td class="cfhwhitetitle" width="100%" height="10">
+            <img src="/si/spacer.gif" width="100%" height="10" alt="">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" width="100%" class="leftnav_header">
+                  <a id="lbtnShopbyaisle" class="shopByAisleLink" onclick="return UpdateFrames('SHOP','','','','','','');" href="javascript:__doPostBack('lbtnShopbyaisle','')">Shop By Aisle</a>
+                </td>
+              </tr>
+            </table>
+            <div class="leftnav_borders whitebg">
+              <table width="178" cellpadding="0" cellspacing="0" border="0" class="black11">
+                <tr><td class="leftnav_header_spacer"><img src="/si/spacer.gif" width="1" height="10" alt=""></td></tr>
+                <tr>
+                  <td >
+                    <a id="lbtnDepartment" class="leftnav_dept_shelves" onclick="return UpdateFrames('DEPARTMENT','5','','','','','');" href="javascript:__doPostBack('lbtnDepartment','')">Beverages</a>
+                  </td>
+                </tr>
+                <tr><td class="leftnav_header_spacer"><img src="/si/spacer.gif" width="1" height="7" alt=""></td></tr>
+
+                <tr><td ><div class="leftnav_dashedline"></div></td></tr>
+
+
+                <tr>
+                  <td align="left" >
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td align="left" valign="top" >
+                          <!--<input type="image" name="ArrowImage" id="ArrowImage" class="cfhorangetitle" onclick="return UpdateFrames('AISLE','','5_3','','','','');" src="/si/gw_back_arrow_white.gif" alt="" />-->
+                          <img src="/si/leftNavArrow.jpg" border="0" class="leftnav_dept_curr_img"><a id="lbtnAisle" class="leftnav_dept_curr" onclick="return UpdateFrames('AISLE','','5_3','','','','');" href="javascript:__doPostBack('lbtnAisle','')">Juice & Nectars</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl0_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_1',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Juice - Apple &amp; Cider&quot;);" href="javascript:__doPostBack('rptShelves$_ctl0$ShelfLink','')">Juice - Apple & Cider</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl1_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_2',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Juice - Berry &amp; Blends&quot;);" href="javascript:__doPostBack('rptShelves$_ctl1$ShelfLink','')">Juice - Berry & Blends</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl2_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_3',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Juice - Cranberry&quot;);" href="javascript:__doPostBack('rptShelves$_ctl2$ShelfLink','')">Juice - Cranberry</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl3_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_4',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Juice - Grape&quot;);" href="javascript:__doPostBack('rptShelves$_ctl3$ShelfLink','')">Juice - Grape</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl4_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_5',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Juice - Grapefruit&quot;);" href="javascript:__doPostBack('rptShelves$_ctl4$ShelfLink','')">Juice - Grapefruit</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl5_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_6',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Juice - Lemon &amp; Lime&quot;);" href="javascript:__doPostBack('rptShelves$_ctl5$ShelfLink','')">Juice - Lemon & Lime</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl6_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_7',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Juice - Orange&quot;);" href="javascript:__doPostBack('rptShelves$_ctl6$ShelfLink','')">Juice - Orange</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl7_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_8',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Juice - Pineapple&quot;);" href="javascript:__doPostBack('rptShelves$_ctl7$ShelfLink','')">Juice - Pineapple</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl8_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_9',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Juice - Prune&quot;);" href="javascript:__doPostBack('rptShelves$_ctl8$ShelfLink','')">Juice - Prune</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl9_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_10',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Juice - Tomato &amp; Veg&quot;);" href="javascript:__doPostBack('rptShelves$_ctl9$ShelfLink','')">Juice - Tomato & Veg</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl10_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_11',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Juice/Drinks Multipacks&quot;);" href="javascript:__doPostBack('rptShelves$_ctl10$ShelfLink','')">Juice/Drinks Multipacks</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl11_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_12',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Lemonade &amp; Limeade&quot;);" href="javascript:__doPostBack('rptShelves$_ctl11$ShelfLink','')">Lemonade & Limeade</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl12_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_13',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Nectars &amp; Other Juice&quot;);" href="javascript:__doPostBack('rptShelves$_ctl12$ShelfLink','')">Nectars & Other Juice</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl13_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_14',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Punch &amp; Tea&quot;);" href="javascript:__doPostBack('rptShelves$_ctl13$ShelfLink','')">Punch & Tea</a>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td ><img src="/si/leftnav_bullet.gif" class="leftnav_bullet"/>
+                    <a id="rptShelves__ctl14_ShelfLink" class="leftnav_dept" onclick="return UpdateFrames('SHELF','','','5_3_15',&quot;Beverages&quot;,&quot;Juice &amp; Nectars&quot;,&quot;Specialty Juice &amp; Drinks&quot;);" href="javascript:__doPostBack('rptShelves$_ctl14$ShelfLink','')">Specialty Juice & Drinks</a>
+                  </td>
+                </tr>
+
+              </table>
+            </div>
+          </td>
+        </tr>
+
+      </table>
+      <table cellspacing="0" cellpadding="0" width="180" border="0">
+        <tr>
+          <td class="leftnav_bottom" ></td>
+        </tr>
+  </table>	</div></div></form></body></html>
