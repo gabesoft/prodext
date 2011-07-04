@@ -19,15 +19,15 @@ module Prodext
       def parse(html = nil, data = nil)
         if data.nil?
           url = 'http://shop.safeway.com/superstore/'
-          { :urls => get_url_set(:get, url), :step => :init1, :results => [] }
+          { :urls => get_url_set(:get, url, { :step => :init1 }), :results => [] }
         else
           case data[:step]
           when :init1
             url = 'https://shop.safeway.com/register/registernew.asp?signin=1&returnTo=&register=&rzipcode=90028&zipcode=90028'
-            { :urls => get_url_set(:post, url), :step => :init2, :results => [] }
+            { :urls => get_url_set(:post, url, { :step => :init2 }), :results => [] }
           when :init2
             url = 'http://shop.safeway.com/Dnet/Departments.aspx'
-            { :urls => get_url_set(:get, url), :step => :category, :results => [] }
+            { :urls => get_url_set(:get, url, { :step => :category }), :results => [] }
           when :category
           when :aisle
           when :product
@@ -37,12 +37,12 @@ module Prodext
 
       private 
 
-      def get_url_set(method, url)
-        [ get_url(method, url) ]
+      def get_url_set(method, url, state)
+        [ get_url(method, url, state) ]
       end
 
-      def get_url(method, url)
-        { :url => url, :method => method, :options => {} }
+      def get_url(method, url, state)
+        { :url => url, :method => method, :state => state, :options => {} }
       end
     end
 
