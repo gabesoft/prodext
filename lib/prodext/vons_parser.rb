@@ -31,6 +31,7 @@ module Prodext
           when :category
             { :urls => parse_aisle_urls(html, state), :results => [] }
           when :aisle
+            { :urls => parse_shelf_urls(html, state), :results => [] }
           when :product
           end
         end
@@ -38,11 +39,24 @@ module Prodext
 
       private 
 
+      def parse_shelf_urls(html, state)
+        doc = Hpricot html
+        container = doc/'div.shopByAisleContainer'
+        links = container/'a.leftnav_dept'
+        pat = /UpdateFrames\(('|")(\d+_\d+)('|")\)/x
+        links.map do |a|
+          link_state = { :step => :aisle, :category => "#{state[:category]}:#{a.inner_html}" }
+          id = pat.match(a.attributes['onclick'])[2]
+          url = "http://shop.safeway.com/Dnet/Shelves.aspx?ID=#{id}"
+          get_url :get, url, link_state
+        end
+      end
+
       def parse_aisle_urls(html, state)
         doc = Hpricot html
         container = doc/'div.shopByAisleContainer'
         links = container/'a.leftnav_dept'
-        pat = /UpdateFrames\(('|")(\d+)('|")\)/
+        pat = /UpdateFrames\(('|")(\d+)('|")\)/x
         links.map do |a|
           link_state = { :step => :aisle, :category => a.inner_html }
           id = pat.match(a.attributes['onclick'])[2]
