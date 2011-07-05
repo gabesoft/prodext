@@ -16,12 +16,12 @@ module Prodext
 
       end
 
-      def parse(html = nil, data = nil)
-        if data.nil?
+      def parse(html = nil, state = nil)
+        if state.nil?
           url = 'http://shop.safeway.com/superstore/'
           { :urls => get_url_set(:get, url, { :step => :init1 }), :results => [] }
         else
-          case data[:step]
+          case state[:step]
           when :init1
             url = 'https://shop.safeway.com/register/registernew.asp?signin=1&returnTo=&register=&rzipcode=90028&zipcode=90028'
             { :urls => get_url_set(:post, url, { :step => :init2 }), :results => [] }
@@ -29,6 +29,7 @@ module Prodext
             url = 'http://shop.safeway.com/Dnet/Departments.aspx'
             { :urls => get_url_set(:get, url, { :step => :category }), :results => [] }
           when :category
+            { :urls => parse_aisle_urls(html, state), :results => [] }
           when :aisle
           when :product
           end
@@ -36,6 +37,19 @@ module Prodext
       end
 
       private 
+
+      def parse_aisle_urls(html, state)
+        doc = Hpricot html
+        container = doc/'div.shopByAisleContainer'
+        links = container/'a.leftnav_dept'
+        pat = /UpdateFrames\(('|")(\d+)('|")\)/
+        links.map do |a|
+          link_state = { :step => :aisle, :category => a.inner_html }
+          id = pat.match(a.attributes['onclick'])[2]
+          url = "http://shop.safeway.com/Dnet/Aisles.aspx?ID=#{id}"
+          get_url :get, url, link_state
+        end
+      end
 
       def get_url_set(method, url, state)
         [ get_url(method, url, state) ]

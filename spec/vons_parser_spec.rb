@@ -31,7 +31,8 @@ module Prodext
       it 'should construct the correct category links' do
         html = File.read('spec/files/category.html')
         data = @parser.parse '', { :step => :init2 }
-        data = @parser.parse html, data
+        state = data[:urls][0][:state]
+        data = @parser.parse html, state
         data.should be
         urls = data[:urls]
         urls.length.should eq 4
