@@ -1,4 +1,5 @@
 require 'hpricot'
+require 'cgi'
 
 module Prodext
   module Vons
@@ -32,12 +33,48 @@ module Prodext
             { :urls => parse_aisle_urls(html, state), :results => [] }
           when :aisle
             { :urls => parse_shelf_urls(html, state), :results => [] }
+          when :shelf
+            { :urls => parse_product_urls(html, state), :results => [] }
           when :product
+            { :urls => [], :results => parse_products(html, state) }
           end
         end
       end
 
       private 
+
+      def parse_products(html, state)
+        []
+      end
+
+      #TODO: refactor url creation
+      #      base = http://shop.safeway.com/
+      #
+      def parse_product_urls(html, state)
+        doc = Hpricot html
+        container = doc/'div.shopByAisleContainer'
+        links = container/'a.leftnav_dept'
+        pat = /UpdateFrames\('SHELF',
+                             '(?<did>)[^']*',
+                             '(?<aid>[^']*)',
+                             '(?<shelfid>[0-9_]+)',
+                             "(?<deptname>[^"]+)",
+                             "(?<aislename>[^"]+)",
+                             "(?<shelfname>[^"]+)"\)/x
+        links.map do |a|
+          link_state = { :step => :product, :category => "#{state[:category]}:#{a.inner_html}" }
+          text = CGI.unescapeHTML a.attributes['onclick']
+          match = pat.match text
+
+          shelfid   = URI.escape match['shelfid'], Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")
+          deptname  = URI.escape match['deptname'], Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")
+          aislename = URI.escape match['aislename'], Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")
+          shelfname = URI.escape match['shelfname'], Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")
+
+          url = "http://shop.safeway.com/superstore/shelf.asp?shelfid=#{shelfid}&deptname=#{deptname}&aislename=#{aislename}&shelfname=#{shelfname}"
+          get_url :get, url.strip, link_state
+        end
+      end
 
       def parse_shelf_urls(html, state)
         doc = Hpricot html

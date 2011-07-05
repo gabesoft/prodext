@@ -69,9 +69,9 @@ module Prodext
         urls = data[:urls]
 
         urls.length.should eq 3
-        urls[0][:url].should eq 'http://shop.safeway.com/superstore/shelf.asp?shelfId=5_3_1&DeptName=Beverages&AisleName=Juice%20%26%20Nectars&ShelfName=Juice%20-%20Apple%20%26%20Cider'
-        urls[1][:url].should eq 'http://shop.safeway.com/superstore/shelf.asp?shelfId=5_3_2&DeptName=Beverages&AisleName=Juice%20%26%20Nectars&ShelfName=Juice%20-%20Berry%20%26%20Blends'
-        urls[2][:url].should eq 'http://shop.safeway.com/superstore/shelf.asp?shelfId=5_3_3&DeptName=Beverages&AisleName=Juice%20%26%20Nectars&ShelfName=Juice%20-%20Cranberry'
+        urls[0][:url].should eq 'http://shop.safeway.com/superstore/shelf.asp?shelfid=5_3_1&deptname=Beverages&aislename=Juice%20%26%20Nectars&shelfname=Juice%20-%20Apple%20%26%20Cider'
+        urls[1][:url].should eq 'http://shop.safeway.com/superstore/shelf.asp?shelfid=5_3_2&deptname=Beverages&aislename=Juice%20%26%20Nectars&shelfname=Juice%20-%20Berry%20%26%20Blends'
+        urls[2][:url].should eq 'http://shop.safeway.com/superstore/shelf.asp?shelfid=5_3_3&deptname=Beverages&aislename=Juice%20%26%20Nectars&shelfname=Juice%20-%20Cranberry'
 
         urls[0][:state][:step].should eq :product
         urls[0][:state][:category].should eq 'catA:aisleB:Juice - Apple & Cider'
