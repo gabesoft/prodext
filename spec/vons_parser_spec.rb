@@ -30,9 +30,6 @@ module Prodext
 
       it 'should construct the correct aisle links' do
         html = File.read 'spec/files/category.html'
-        #data = @parser.parse '', { :step => :init2 }
-        #state = data[:urls][0][:state]
-        #data = @parser.parse html, state
         data = @parser.parse html, { :step => :category }
         urls = data[:urls]
 
@@ -43,6 +40,7 @@ module Prodext
         urls[2][:url].should eq 'http://shop.safeway.com/Dnet/Aisles.aspx?ID=24'
         urls[3][:url].should eq 'http://shop.safeway.com/Dnet/Aisles.aspx?ID=11'
 
+        urls[0][:state][:step].should eq :aisle
         urls[0][:state][:category].should eq 'Canned Goods & Soups'
         urls[1][:state][:category].should eq 'Condiments/Spices & Bake'
         urls[2][:state][:category].should eq 'Cookies, Snacks & Candy'
@@ -59,9 +57,26 @@ module Prodext
         urls[1][:url].should eq 'http://shop.safeway.com/Dnet/Shelves.aspx?ID=5_2'
         urls[2][:url].should eq 'http://shop.safeway.com/Dnet/Shelves.aspx?ID=5_3'
 
+        urls[0][:state][:step].should eq :shelf
         urls[0][:state][:category].should eq 'stuff:Coffee'
         urls[1][:state][:category].should eq 'stuff:Hot Tea, Cider & Cocoa'
         urls[2][:state][:category].should eq 'stuff:Juice & Nectars'
+      end
+
+      it 'should construct the correct product links' do
+        html = File.read 'spec/files/shelf.html'
+        data = @parser.parse html, { :step => :shelf, :category => 'catA:aisleB' }
+        urls = data[:urls]
+
+        urls.length.should eq 3
+        urls[0][:url].should eq 'http://shop.safeway.com/superstore/shelf.asp?shelfId=5_3_1&DeptName=Beverages&AisleName=Juice%20%26%20Nectars&ShelfName=Juice%20-%20Apple%20%26%20Cider'
+        urls[1][:url].should eq 'http://shop.safeway.com/superstore/shelf.asp?shelfId=5_3_2&DeptName=Beverages&AisleName=Juice%20%26%20Nectars&ShelfName=Juice%20-%20Berry%20%26%20Blends'
+        urls[2][:url].should eq 'http://shop.safeway.com/superstore/shelf.asp?shelfId=5_3_3&DeptName=Beverages&AisleName=Juice%20%26%20Nectars&ShelfName=Juice%20-%20Cranberry'
+
+        urls[0][:state][:step].should eq :product
+        urls[0][:state][:category].should eq 'catA:aisleB:Juice - Apple & Cider'
+        urls[1][:state][:category].should eq 'catA:aisleB:Juice - Berry & Blends'
+        urls[2][:state][:category].should eq 'catA:aisleB:Juice - Cranberry'
       end
     end
   end

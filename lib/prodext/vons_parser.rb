@@ -45,7 +45,7 @@ module Prodext
         links = container/'a.leftnav_dept'
         pat = /UpdateFrames\(('|")(\d+_\d+)('|")\)/x
         links.map do |a|
-          link_state = { :step => :aisle, :category => "#{state[:category]}:#{a.inner_html}" }
+          link_state = { :step => :shelf, :category => "#{state[:category]}:#{a.inner_html}" }
           id = pat.match(a.attributes['onclick'])[2]
           url = "http://shop.safeway.com/Dnet/Shelves.aspx?ID=#{id}"
           get_url :get, url, link_state
