@@ -81,6 +81,23 @@ module Prodext
         urls[1][:state][:category].should eq 'catA:aisleB:Juice - Berry & Blends'
         urls[2][:state][:category].should eq 'catA:aisleB:Juice - Cranberry'
       end
+
+      it 'should parse the products from html' do
+        html = File.read 'spec/files/product.html'
+        data = @parser.parse html, { :step => :product, :category => 'juice' }
+        results = data[:results]
+
+        results.length.should eq 3
+        results[0][:category].should eq 'juice'
+
+        results[0][:cf_dsc].should eq 'Hansens Apple Raspberry - 64 Fl. Oz.'
+        results[1][:cf_dsc].should eq 'Hansens Natural Apple Juice - 64 Fl. Oz.'
+        results[2][:cf_dsc].should eq 'Martinelli Apple Juice - 128 Fl. Oz.'
+
+        results[0][:price].should eq '4.09'
+        results[1][:price].should eq '3.79'
+        results[2][:price].should eq '10.99'
+      end
     end
   end
 end
