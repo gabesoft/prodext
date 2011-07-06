@@ -19,16 +19,18 @@ module Prodext
 
       def parse(html = nil, state = nil)
         if state.nil?
-          url = 'http://shop.safeway.com/superstore/'
-          { :urls => get_url_set(:get, url, { :step => :init1 }), :results => [] }
+          url = get_url 'superstore/'
+          { :urls => [ get_url_data(:get, url, { :step => :init1 }) ], :results => [] }
         else
           case state[:step]
           when :init1
-            url = 'https://shop.safeway.com/register/registernew.asp?signin=1&returnTo=&register=&rzipcode=90028&zipcode=90028'
-            { :urls => get_url_set(:post, url, { :step => :init2 }), :results => [] }
+            url = get_url 'register/registernew.asp', {
+              :signin => '1', :returnto => '', :register => '', :rzipcode => '90024', :zipcode => '90024'
+            }, true
+            { :urls => [ get_url_data(:post, url, { :step => :init2 }) ], :results => [] }
           when :init2
-            url = 'http://shop.safeway.com/Dnet/Departments.aspx'
-            { :urls => get_url_set(:get, url, { :step => :category }), :results => [] }
+            url = get_url 'dnet/departments.aspx'
+            { :urls => [ get_url_data(:get, url, { :step => :category }) ], :results => [] }
           when :category
             { :urls => parse_aisle_urls(html, state), :results => [] }
           when :aisle
@@ -47,9 +49,6 @@ module Prodext
         []
       end
 
-      #TODO: refactor url creation
-      #      base = http://shop.safeway.com/
-      #
       def parse_product_urls(html, state)
         doc = Hpricot html
         container = doc/'div.shopByAisleContainer'
@@ -66,13 +65,13 @@ module Prodext
           text = CGI.unescapeHTML a.attributes['onclick']
           match = pat.match text
 
-          shelfid   = URI.escape match['shelfid'], Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")
-          deptname  = URI.escape match['deptname'], Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")
-          aislename = URI.escape match['aislename'], Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")
-          shelfname = URI.escape match['shelfname'], Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")
-
-          url = "http://shop.safeway.com/superstore/shelf.asp?shelfid=#{shelfid}&deptname=#{deptname}&aislename=#{aislename}&shelfname=#{shelfname}"
-          get_url :get, url.strip, link_state
+          url = get_url 'superstore/shelf.asp', { 
+            :shelfid    => match['shelfid'],
+            :deptname   => match['deptname'],
+            :aislename  => match['aislename'],
+            :shelfname  => match['shelfname']
+          }
+          get_url_data :get, url.strip, link_state
         end
       end
 
@@ -84,8 +83,8 @@ module Prodext
         links.map do |a|
           link_state = { :step => :shelf, :category => "#{state[:category]}:#{a.inner_html}" }
           id = pat.match(a.attributes['onclick'])[2]
-          url = "http://shop.safeway.com/Dnet/Shelves.aspx?ID=#{id}"
-          get_url :get, url, link_state
+          url = get_url 'dnet/shelves.aspx', { :id => id }
+          get_url_data :get, url, link_state
         end
       end
 
@@ -97,17 +96,25 @@ module Prodext
         links.map do |a|
           link_state = { :step => :aisle, :category => a.inner_html }
           id = pat.match(a.attributes['onclick'])[2]
-          url = "http://shop.safeway.com/Dnet/Aisles.aspx?ID=#{id}"
-          get_url :get, url, link_state
+          url = get_url 'dnet/aisles.aspx', { :id => id }
+          get_url_data :get, url, link_state
         end
       end
 
-      def get_url_set(method, url, state)
-        [ get_url(method, url, state) ]
+      def get_url_data(method, url, state)
+        { :url => url, :method => method, :state => state, :options => {} }
       end
 
-      def get_url(method, url, state)
-        { :url => url, :method => method, :state => state, :options => {} }
+      def get_url(relative_path, query_hash={}, secure=false)
+        protocol = secure ? 'https' : 'http'
+        base = "#{protocol}://shop.safeway.com/#{relative_path}"
+
+        query = query_hash.collect do |key, value|
+          param = URI.escape value, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")
+          "#{key}=#{param}"
+        end.join '&'
+
+        base + (query.empty? ? '' : '?') + query
       end
     end
 

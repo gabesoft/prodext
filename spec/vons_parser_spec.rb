@@ -12,6 +12,7 @@ module Prodext
         urls = data[:urls]
         urls.length.should eq 1
         urls[0][:state][:step].should eq :init1
+        urls[0][:url].should eq 'http://shop.safeway.com/superstore/'
       end
 
       it 'should return the correct url and step on init1' do
@@ -19,6 +20,7 @@ module Prodext
         urls = data[:urls]
         urls.length.should eq 1
         urls[0][:state][:step].should eq :init2
+        urls[0][:url].should eq 'https://shop.safeway.com/register/registernew.asp?signin=1&returnto=&register=&rzipcode=90024&zipcode=90024'
       end
 
       it 'should return the correct url and step on init2' do
@@ -26,6 +28,7 @@ module Prodext
         urls = data[:urls]
         urls.length.should eq 1
         urls[0][:state][:step].should eq :category
+        urls[0][:url].should eq 'http://shop.safeway.com/dnet/departments.aspx'
       end
 
       it 'should construct the correct aisle links' do
@@ -35,10 +38,10 @@ module Prodext
 
         urls.length.should eq 4
 
-        urls[0][:url].should eq 'http://shop.safeway.com/Dnet/Aisles.aspx?ID=9'
-        urls[1][:url].should eq 'http://shop.safeway.com/Dnet/Aisles.aspx?ID=20'
-        urls[2][:url].should eq 'http://shop.safeway.com/Dnet/Aisles.aspx?ID=24'
-        urls[3][:url].should eq 'http://shop.safeway.com/Dnet/Aisles.aspx?ID=11'
+        urls[0][:url].should eq 'http://shop.safeway.com/dnet/aisles.aspx?id=9'
+        urls[1][:url].should eq 'http://shop.safeway.com/dnet/aisles.aspx?id=20'
+        urls[2][:url].should eq 'http://shop.safeway.com/dnet/aisles.aspx?id=24'
+        urls[3][:url].should eq 'http://shop.safeway.com/dnet/aisles.aspx?id=11'
 
         urls[0][:state][:step].should eq :aisle
         urls[0][:state][:category].should eq 'Canned Goods & Soups'
@@ -53,9 +56,9 @@ module Prodext
         urls = data[:urls]
 
         urls.length.should eq 3
-        urls[0][:url].should eq 'http://shop.safeway.com/Dnet/Shelves.aspx?ID=5_1'
-        urls[1][:url].should eq 'http://shop.safeway.com/Dnet/Shelves.aspx?ID=5_2'
-        urls[2][:url].should eq 'http://shop.safeway.com/Dnet/Shelves.aspx?ID=5_3'
+        urls[0][:url].should eq 'http://shop.safeway.com/dnet/shelves.aspx?id=5_1'
+        urls[1][:url].should eq 'http://shop.safeway.com/dnet/shelves.aspx?id=5_2'
+        urls[2][:url].should eq 'http://shop.safeway.com/dnet/shelves.aspx?id=5_3'
 
         urls[0][:state][:step].should eq :shelf
         urls[0][:state][:category].should eq 'stuff:Coffee'
