@@ -3,6 +3,7 @@ require 'prodext/version'
 require 'net/https'
 require 'optparse'
 require 'pp'
+require 'json'
 
 module Prodext
   def self.run
@@ -15,11 +16,15 @@ module Prodext
     end
   end
 
-  def self.extract_products(parser, output)
-
-    case parser
+  def self.extract_products(parser_name, output)
+    extractor = Extractor.new
+    case parser_name
     when 'vons'
-      #TODO: extract products and save to output file as json
+      parser = Vons::Parser.new
+      data = extractor.extract parser
+      json = data.to_json
+      puts json
+      #TODO: save json to output file
     else
       puts "unknown parser: #{parser}"
     end

@@ -1,5 +1,6 @@
 require 'hpricot'
 require 'cgi'
+require 'iconv'
 
 module Prodext
   module Vons
@@ -36,7 +37,9 @@ module Prodext
       def parse_products(html, state)
         doc = Hpricot html
         container = doc/'form[@name=Products]'
-        products = (container/'script').select {|s| /^RenderProductRow/.match s.inner_html }
+        products = (container/'script').select do |s| 
+          /^RenderProductRow/.match (safe_text s.inner_html)
+        end
         pat = /^RenderProductRow\('(?<display_type>[^']*)'\s*,\s*
                                   '(?<gw_product_swgt>[^']*)'\s*,\s*
                                   (?<bpr_tpn>\d+)\s*,\s*
@@ -80,13 +83,18 @@ module Prodext
                                   '(?<enable_pagination>[^']*)'\s*
                                   \)/ix
         products.map do |p|
-          match = pat.match p.inner_html
-          result = { :category => state[:category] }
-          match.names.each do |n|
-            result[n.to_sym] = match[n]
+          match = pat.match (safe_text p.inner_html)
+          if match.nil?
+            puts 'could not match product:'
+            puts p.inner_html
+          else
+            result = { :category => state[:category] }
+            match.names.each do |n|
+              result[n.to_sym] = match[n]
+            end
+            result
           end
-          result
-        end
+        end.compact
       end
 
       def parse_product_urls(html, state)
@@ -156,6 +164,13 @@ module Prodext
 
         base + (query.empty? ? '' : '?') + query
       end
+
+      def safe_text text
+        conv = Iconv.new('UTF-8//IGNORE', 'UTF-8')
+        safe = conv.iconv(text + ' ')[0..-2]
+        safe
+      end
+
     end
 
   end
