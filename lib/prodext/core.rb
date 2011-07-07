@@ -5,45 +5,51 @@ require 'optparse'
 require 'pp'
 
 module Prodext
-
-  #def self.run_old
-  #http_method = ARGV.shift
-  #url = ARGV.shift
-  #cookies_path = ARGV.shift
-  #content = get_usage
-
-  #if !(url.nil? || url.empty?)
-  #case http_method
-  #when 'GET'
-  #content = page_get url, cookies_path
-  #when 'POST'
-  #content = page_post url, cookies_path, {}
-  #end
-  #end
-
-  #puts content
-  #end
-
   def self.run
     options = parse_options
 
+    if options[:request]
+      make_request options[:method], options[:url], options[:cookies]
+    elsif options[:extract]
+      extract_products options[:parser], options[:output]
+    end
+  end
+
+  def self.extract_products(parser, output)
+
+    case parser
+    when 'vons'
+      #TODO: extract products and save to output file as json
+    else
+      puts "unknown parser: #{parser}"
+    end
+  end
+
+  def self.make_request(method, url, cookies)
+    content = ''
+    case method
+    when 'GET'
+      content = page_get url, cookies
+    when 'POST'
+      content = page_post url, cookies, {}
+    end
+    puts content
   end
 
   def self.parse_options
     options = {}
     parser = OptionParser.new do |opts|
-      #TODO: check l.length and add defaults as necessary
       opts.on '-r', '--request method,url,cookies', Array, 'make a web request given an http method, a url, and a cookies file path' do |l|
         options[:request] = true
-        options[:method] = l[0]
-        options[:url] = l[1]
-        options[:cookies] = l[2]
+        options[:method] = l[0]   unless l.length < 1
+        options[:url] = l[1]      unless l.length < 2
+        options[:cookies] = l[2]  unless l.length < 3
       end
 
       opts.on '-e', '--extract parser,output', Array, 'extract products given a parser and an output file path' do |l|
         options[:extract] = true
-        options[:parser] = l[0]
-        options[:output] = l[1]
+        options[:parser] = l[0]   unless l.length < 1
+        options[:output] = l[1]   unless l.length < 2
       end
 
       opts.on_tail '-h', '--help', 'display this screen' do
@@ -56,11 +62,20 @@ module Prodext
         exit
       end
     end
-    parser.parse!
 
-    pp 'options detected: ', options
+    begin
+      parser.parse!
 
-    options
+      puts 'options detected'
+      puts '----------------'
+      pp options
+      puts '----------------'
+
+      options
+    rescue OptionParser::InvalidOption
+      puts parser
+      exit
+    end
   end
 
   private
