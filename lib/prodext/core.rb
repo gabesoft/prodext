@@ -7,21 +7,21 @@ require 'pp'
 module Prodext
 
   #def self.run_old
-    #http_method = ARGV.shift
-    #url = ARGV.shift
-    #cookies_path = ARGV.shift
-    #content = get_usage
+  #http_method = ARGV.shift
+  #url = ARGV.shift
+  #cookies_path = ARGV.shift
+  #content = get_usage
 
-    #if !(url.nil? || url.empty?)
-      #case http_method
-      #when 'GET'
-        #content = page_get url, cookies_path
-      #when 'POST'
-        #content = page_post url, cookies_path, {}
-      #end
-    #end
+  #if !(url.nil? || url.empty?)
+  #case http_method
+  #when 'GET'
+  #content = page_get url, cookies_path
+  #when 'POST'
+  #content = page_post url, cookies_path, {}
+  #end
+  #end
 
-    #puts content
+  #puts content
   #end
 
   def self.run
@@ -32,13 +32,8 @@ module Prodext
   def self.parse_options
     options = {}
     parser = OptionParser.new do |opts|
-      opts.on '-h', '--help', 'display this screen' do
-        puts opts
-        exit
-      end
-
+      #TODO: check l.length and add defaults as necessary
       opts.on '-r', '--request method,url,cookies', Array, 'make a web request given an http method, a url, and a cookies file path' do |l|
-        #TODO: check l.length and add defaults as necessary
         options[:request] = true
         options[:method] = l[0]
         options[:url] = l[1]
@@ -51,11 +46,19 @@ module Prodext
         options[:output] = l[1]
       end
 
+      opts.on_tail '-h', '--help', 'display this screen' do
+        puts opts
+        exit
+      end
+
+      opts.on_tail '-v', '--version', 'show version' do
+        puts 'prodext ' + Prodext::VERSION
+        exit
+      end
     end
     parser.parse!
 
-    pp "Options: ", options
-    pp "ARGV: ", ARGV
+    pp 'options detected: ', options
 
     options
   end
