@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm -f `dirname $0`/../pkg/prodext*.gem
+gem build `dirname $0`/../prodext.gemspec
+mv prodext*.gem `dirname $0`/../pkg/
+sudo gem install --local `dirname $0`/../pkg/prodext*.gem

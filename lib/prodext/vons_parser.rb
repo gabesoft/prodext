@@ -5,18 +5,6 @@ module Prodext
   module Vons
 
     class Parser
-
-      #- :init1 prodext GET http://shop.safeway.com/superstore/ tmp/safeway.txt
-      #- :init2 prodext POST "https://shop.safeway.com/register/registernew.asp?signin=1&returnTo=&register=&rzipcode=90028&zipcode=90028" "tmp/safeway.txt"
-      #- :category prodext GET "http://shop.safeway.com/Dnet/Departments.aspx" "tmp/safeway.txt"
-      #- :aisle
-      #- :shelf
-      #- :product
-
-      def initialize
-
-      end
-
       def parse(html = nil, state = nil)
         if state.nil?
           url = get_url 'superstore/'
@@ -98,7 +86,7 @@ module Prodext
             result[n.to_sym] = match[n]
           end
           result
-        end.compact
+        end
       end
 
       def parse_product_urls(html, state)

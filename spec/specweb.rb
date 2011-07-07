@@ -1,7 +1,6 @@
 require 'fakeweb'
 
 FakeWeb.allow_net_connect = true # allow unregistered connections
-#FakeWeb.allow_net_connect = false
 
 module Prodext
   SPEC_DOMAIN = 'http://www.myapp.com/'

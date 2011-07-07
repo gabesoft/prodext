@@ -13,7 +13,8 @@ module Prodext
       http.start.request request
     end
 
-    def self.post(uri, cookies, params)
+    def self.post(uri, cookies, params = nil)
+      params ||= {}
       http = get_http uri
 
       opts = {}

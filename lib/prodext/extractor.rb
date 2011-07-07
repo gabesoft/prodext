@@ -2,15 +2,15 @@ require 'net/https'
 
 module Prodext
   class Extractor
-    def initialize(opts = nil)
-      @urls = []
-      @results = []
-      @cookies_path = opts[:cookies] unless opts.nil?
+    def initialize
+      @cookies = CookieStore.new
     end
 
     def extract parser
       data = parser.parse
-      @urls.concat data[:urls]
+      @urls = data[:urls]
+      @results = []
+
       while @urls.length > 0 do
         url_data = @urls.shift
         html = make_request url_data
@@ -18,8 +18,11 @@ module Prodext
         @urls.concat data[:urls]
         @results.concat data[:results]
       end
+
       @results
     end
+
+    private
 
     def make_request url_data
       url = url_data[:url]
@@ -28,33 +31,25 @@ module Prodext
 
       case method
       when :get
-        page_get url, @cookies_path
+        page_get url
       when :post
-        page_post url, @cookies_path, params 
+        page_post url, params
       else
         "invalid http method: #{method}"
       end
     end
 
-    def page_get(url, cookies_path = nil)
+    def page_get url
       uri = URI.parse url
-      cookies = CookieStoreSerializer.file_load cookies_path
-      response = HTTP.get uri, cookies
-
-      cookies.merge! response['Set-Cookie']
-      CookieStoreSerializer.file_save cookies_path, cookies
-
+      response = HTTP.get uri, @cookies
+      @cookies.merge! response['Set-Cookie']
       response.body
     end
 
-    def self.page_post(url, cookies_path = nil, params)
+    def page_post(url, params)
       uri = URI.parse url
-      cookies = CookieStoreSerializer.file_load cookies_path
-      response = HTTP.post uri, cookies, params
-
-      cookies.merge! response['Set-Cookie']
-      CookieStoreSerializer.file_save cookies_path, cookies
-
+      response = HTTP.post uri, @cookies, params
+      @cookies.merge! response['Set-Cookie']
       response.body
     end
   end
