@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+
+require 'json'
+
+module Prodext
+  class Converter
+    def self.convert
+      infile = ARGV.shift
+      outfile = ARGV.shift
+      if infile.nil? || !File.exist?(infile) || outfile.nil? || outfile.empty?
+        print_usage
+        exit
+      else
+        products = read_products infile
+        output = products.map do |p|
+          { :category => p['category'],
+            :name => p['cf_dsc'],
+            :tags => [] }
+        end
+        write_products outfile, output
+        puts "#{output.length} products converted"
+      end
+    end
+
+    private
+
+    def self.read_products file_path
+      contents = File.read file_path
+      JSON.parse contents
+    end
+
+    def self.write_products(file_path, products)
+      file = File.open file_path, 'w'
+      file.write products.to_json
+    end
+
+    def self.print_usage
+      puts <<-TEXT
+Usage: convert <infile> <outfile>
+      TEXT
+    end
+  end
+end
+
+if __FILE__ == $0
+  Prodext::Converter.convert
+end

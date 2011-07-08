@@ -13,8 +13,9 @@ module Prodext
         else
           case state[:step]
           when :init1
+            zip = '90024' #TODO: make constructor parameter
             url = get_url 'register/registernew.asp', {
-              :signin => '1', :returnto => '', :register => '', :rzipcode => '90024', :zipcode => '90024'
+              :signin => '1', :returnto => '', :register => '', :rzipcode => zip, :zipcode => zip
             }, true
             { :urls => [ get_url_data(:post, url, { :step => :init2 }) ], :results => [] }
           when :init2
