@@ -42,14 +42,14 @@ module Prodext
         end
         pat = /^RenderProductRow\('(?<display_type>[^']*)'\s*,\s*
                                   '(?<gw_product_swgt>[^']*)'\s*,\s*
-                                  (?<bpr_tpn>\d+)\s*,\s*
+                                  (?<bpr_tpn>[0-9+-.]+)\s*,\s*
                                   '(?<cf_dsc>[^']*)'\s*,\s*
                                   '(?<product_type>[^']*)'\s*,\s*
-                                  (?<ilabel>\d+)\s*,\s*
+                                  (?<ilabel>[0-9+-.]+)\s*,\s*
                                   (?<price>[0-9.+-]+)\s*,\s*
                                   '(?<display_price>[^']*)'\s*,\s*
                                   '(?<display_unit>[^']*)'\s*,\s*
-                                  '(?<grey_price>[^']*)'\s*,\s*
+                                  (?<grey_price>[^,]*)\s*,\s*
                                   '(?<grey_unit>[^']*)'\s*,\s*
                                   (?<favorite_flag>true|false)\s*,\s*
                                   '(?<promo_desc>[^']*)'\s*,\s*
@@ -60,17 +60,17 @@ module Prodext
                                   (?<min_weight>[0-9.+-]+)\s*,\s*
                                   (?<max_weight>[0-9.+-]+)\s*,\s*
                                   (?<inc>[0-9.+-]+)\s*,\s*
-                                  (?<display_quantity>\d+)\s*,\s*
-                                  (?<trigger_quantity>\d+)\s*,\s*
+                                  (?<display_quantity>[0-9+-.]+)\s*,\s*
+                                  (?<trigger_quantity>[0-9+-.]+)\s*,\s*
                                   (?<item_count>\w+)\s*,\s*
                                   (?<unavailable_message>true|false)\s*,\s*
                                   '(?<unit_of_measure>[^']*)'\s*,\s*
                                   (?<unit_price>[0-9.+-]+)\s*,\s*
-                                  (?<weight_box_width>\d+)\s*,\s*
+                                  (?<weight_box_width>[0-9+-.]+)\s*,\s*
                                   '(?<help_text>[^']*)'\s*,\s*
                                   (?<div_id>\w+)\s*,\s*
                                   '(?<mode>[^']*)'\s*,\s*
-                                  (?<orig_qty>\d+)\s*,\s*
+                                  (?<orig_qty>[0-9+-.]+)\s*,\s*
                                   '(?<best_sub>[^']*)'\s*,\s*
                                   '(?<subs_cd>[^']*)'\s*,\s*
                                   '(?<substxt>[^']*)'\s*,\s*
